@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app42java:
+    image: app42:1.0
+    ports:
+    - 8080:8080
+    container_name: app42java
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: my-app-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    volumes:
+    - mysql-data:/var/lib/mysql
+    container_name: mysql
+    command: --default-authentication-plugin=mysql_native_password
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8083:80
+    environment:
+       PMA_HOST: mysql
+       PMA_PORT: 3306
+       MYSQL_ROOT_PASSWORD: my-secret-pw
+    container_name: phpmyadmin
+volumes:
+  mysql-data:
+    driver: local
